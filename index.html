@@ -2,593 +2,135 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Costruisci il tuo batterio!</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Costruisci il tuo batterio 3D!</title>
 
 <style>
 *{box-sizing:border-box}
-
-:root{
-  --capsula:#ff9a3d;
-  --capsula-light:#ffc276;
-  --parete:#39b54a;
-  --parete-light:#7de184;
-  --membrana:#ffd928;
-  --citoplasma:#65cef3;
-  --citoplasma-light:#c7f3ff;
-  --ribosomi:#f58220;
-  --plasmide:#c77be5;
-  --nucleoide:#7435b5;
-  --pili:#c85b18;
-  --flagello:#27a844;
-  --blu:#073b82;
-}
-
 body{
-  margin:0;
-  min-height:100vh;
-  font-family:"Trebuchet MS",Arial,sans-serif;
-  color:#12345d;
-  background:
-    radial-gradient(circle at 50% 0,#f7fdff 0,#d9f2ff 38%,#b7ddf3 100%);
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:linear-gradient(#dff5ff,#b9e3f7);
+ color:#073b82;
 }
-
-header{
-  text-align:center;
-  padding:18px 12px 8px;
-}
-
-.title{
-  display:inline-block;
-  padding:14px 50px;
-  background:rgba(255,255,255,.94);
-  border-radius:40px;
-  box-shadow:0 12px 30px rgba(32,85,125,.18);
-}
-
-h1{
-  margin:0;
-  color:var(--blu);
-  font-size:clamp(31px,4vw,52px);
-}
-
-.subtitle{
-  margin-top:6px;
-  font-size:18px;
-  color:#347093;
-}
+header{text-align:center;padding:15px}
+h1{font-size:42px;margin:5px}
+header p{font-size:18px;margin:5px}
 
 .game{
-  width:min(1480px,97%);
-  margin:auto;
-  display:grid;
-  grid-template-columns:330px 1fr;
-  gap:20px;
-  padding:12px 0 30px;
+ display:grid;
+ grid-template-columns:300px 1fr;
+ gap:15px;
+ width:97%;
+ margin:auto;
 }
-
-/* ---------- COMPONENTI ---------- */
 
 .toolbox{
-  background:rgba(255,255,255,.93);
-  border-radius:28px;
-  padding:17px;
-  box-shadow:0 15px 35px rgba(20,70,110,.18);
+ background:white;
+ padding:15px;
+ border-radius:25px;
+ box-shadow:0 10px 25px #0002;
 }
 
-.toolbox h2{
-  margin:0 0 14px;
-  text-align:center;
-  color:var(--blu);
-}
+.toolbox h2{text-align:center}
 
 .pieces{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px;
 }
 
 .piece{
-  min-height:120px;
-  padding:9px 5px;
-  border:3px solid transparent;
-  border-radius:19px;
-  background:linear-gradient(145deg,#fff,#edf5fa);
-  box-shadow:0 6px 12px rgba(0,0,0,.12);
-  text-align:center;
-  cursor:grab;
-  transition:.2s;
-  user-select:none;
+ padding:12px 5px;
+ min-height:85px;
+ border-radius:17px;
+ background:linear-gradient(145deg,#fff,#edf5fa);
+ box-shadow:0 4px 10px #0002;
+ text-align:center;
+ cursor:pointer;
+ border:3px solid transparent;
+ transition:.2s;
 }
 
-.piece:hover{
-  transform:translateY(-4px) scale(1.025);
-}
-
+.piece:hover{transform:scale(1.04)}
 .piece.selected{
-  border-color:#32b768;
-  background:#e9fff0;
+ border-color:#27ae60;
+ background:#e5ffed;
 }
 
-.preview{
-  height:62px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.icon{
+ width:40px;height:40px;
+ margin:0 auto 6px;
+ border-radius:50%;
+ box-shadow:inset 4px 4px 8px #fff8,3px 4px 5px #0003;
+}
+.name{font-weight:bold;font-size:13px}
+
+.stage{
+ background:linear-gradient(#eefaff,#ccefff);
+ border-radius:25px;
+ overflow:hidden;
+ position:relative;
+ min-height:720px;
+ box-shadow:0 10px 25px #0002;
 }
 
-.pname{
-  font-weight:bold;
-  font-size:14px;
-  color:#103b70;
+#scene{
+ width:100%;
+ height:570px;
+ cursor:grab;
 }
 
-.pdesc{
-  margin-top:3px;
-  font-size:11px;
-  color:#687c8c;
+.instructions{
+ position:absolute;
+ top:15px;
+ width:100%;
+ text-align:center;
+ font-weight:bold;
+ pointer-events:none;
 }
 
-/* miniature 3D */
-
-.ball{
-  filter:drop-shadow(0 5px 4px rgba(0,0,0,.22));
-}
-
-.prev-capsule{
-  width:78px;height:43px;border-radius:50%;
-  background:radial-gradient(circle at 30% 20%,#ffd6a0,var(--capsula) 55%,#d96c16);
-}
-
-.prev-wall{
-  width:76px;height:36px;border-radius:50%;
-  border:10px solid var(--parete);
-  box-shadow:inset 3px 3px 3px var(--parete-light);
-}
-
-.prev-membrane{
-  width:76px;height:34px;border-radius:50%;
-  border:9px solid var(--membrana);
-  box-shadow:inset 2px 2px 2px #fff6a4;
-}
-
-.prev-cyto{
-  width:76px;height:44px;border-radius:50%;
-  background:radial-gradient(circle at 30% 20%,white,var(--citoplasma-light) 15%,var(--citoplasma) 70%);
-}
-
-.prev-dna{
-  font-size:46px;
-  color:var(--nucleoide);
-}
-
-.prev-ribo{
-  width:16px;height:16px;border-radius:50%;
-  background:radial-gradient(circle at 30% 20%,#ffd09a,var(--ribosomi));
-  box-shadow:
-    24px 5px 0 var(--ribosomi),
-    -23px 7px 0 #ff9b38,
-    12px -17px 0 #ee7419,
-    -12px -17px 0 #ffad52;
-}
-
-.prev-plasmid{
-  width:51px;height:51px;border-radius:50%;
-  border:9px solid var(--plasmide);
-  box-shadow:3px 5px 4px rgba(0,0,0,.18),inset 2px 2px 2px #edd1f8;
-}
-
-.prev-pili{
-  width:75px;height:50px;position:relative;
-}
-.prev-pili i{
-  position:absolute;left:7px;width:62px;height:7px;border-radius:8px;
-  background:linear-gradient(#e47727,var(--pili));
-  box-shadow:2px 3px 2px rgba(0,0,0,.15);
-}
-.prev-pili i:nth-child(1){top:9px;transform:rotate(-18deg)}
-.prev-pili i:nth-child(2){top:23px;transform:rotate(4deg)}
-.prev-pili i:nth-child(3){top:37px;transform:rotate(20deg)}
-
-.prev-flag{
-  width:90px;height:45px;
-  border-top:10px solid var(--flagello);
-  border-radius:50%;
-  transform:rotate(8deg);
-  filter:drop-shadow(2px 4px 2px rgba(0,0,0,.2));
-}
-
-/* ---------- LAB ---------- */
-
-.lab{
-  position:relative;
-  min-height:720px;
-  overflow:hidden;
-  border-radius:30px;
-  background:
-    linear-gradient(rgba(255,255,255,.72),rgba(220,244,255,.78)),
-    radial-gradient(circle at 80% 20%,#fff,transparent 30%);
-  box-shadow:0 15px 35px rgba(20,70,110,.18);
-}
-
-.lab-title{
-  position:relative;
-  z-index:20;
-  padding-top:16px;
-  text-align:center;
-  font-weight:bold;
-  letter-spacing:1px;
-}
-
-#dropzone{
-  height:525px;
-  position:relative;
-  perspective:1200px;
-}
-
-#instruction{
-  position:absolute;
-  z-index:1;
-  left:50%;
-  top:45%;
-  transform:translate(-50%,-50%);
-  text-align:center;
-  color:#7591a4;
-  font-size:22px;
-  font-weight:bold;
-}
-
-/* piastra */
-
-.platform{
-  position:absolute;
-  left:50%;
-  top:390px;
-  width:680px;
-  height:120px;
-  transform:translateX(-50%);
-  border-radius:50%;
-  border:5px solid rgba(72,201,240,.65);
-  background:radial-gradient(ellipse,#d9fbff 0,rgba(100,207,240,.55) 55%,rgba(52,133,190,.15) 70%,transparent 72%);
-  box-shadow:0 22px 30px rgba(0,75,120,.2),inset 0 0 25px white;
-}
-
-/* ---------- BATTERIO ---------- */
-
-#bacterium{
-  position:absolute;
-  z-index:5;
-  left:46%;
-  top:52%;
-  width:610px;
-  height:330px;
-  transform:translate(-50%,-50%) rotate(-5deg);
-  transform-style:preserve-3d;
-  border-radius:48% 52% 49% 51% / 51% 48% 52% 49%;
-}
-
-.part{
-  position:absolute;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .4s,filter .4s;
-}
-
-/* capsula */
-
-#capsule{
-  inset:-17px;
-  border-radius:inherit;
-  background:
-    radial-gradient(circle at 25% 17%,rgba(255,255,255,.65) 0 4px,transparent 5px),
-    radial-gradient(circle at 70% 78%,rgba(255,255,255,.35) 0 3px,transparent 4px),
-    linear-gradient(145deg,var(--capsula-light),var(--capsula) 50%,#e57219);
-  border:10px solid rgba(244,126,37,.8);
-  box-shadow:
-    inset 12px 14px 20px rgba(255,255,255,.5),
-    inset -13px -14px 22px rgba(169,67,0,.23),
-    0 17px 25px rgba(0,0,0,.2);
-}
-
-/* parete */
-
-#wall{
-  inset:12px;
-  z-index:3;
-  border-radius:inherit;
-  border:20px solid var(--parete);
-  box-shadow:
-    inset 4px 5px 5px var(--parete-light),
-    inset -4px -5px 6px #208332,
-    0 3px 5px rgba(0,0,0,.18);
-}
-
-/* membrana */
-
-#membrane{
-  inset:37px;
-  z-index:4;
-  border-radius:inherit;
-  border:14px solid var(--membrana);
-  box-shadow:
-    inset 3px 4px 3px #fff4a1,
-    inset -3px -4px 4px #d6a900,
-    0 3px 5px rgba(0,0,0,.15);
-}
-
-/* citoplasma */
-
-#cytoplasm{
-  inset:55px;
-  z-index:2;
-  border-radius:inherit;
-  background:
-    radial-gradient(circle at 18% 24%,rgba(255,255,255,.6) 0 5px,transparent 6px),
-    radial-gradient(circle at 65% 65%,rgba(255,255,255,.35) 0 6px,transparent 7px),
-    radial-gradient(circle at 80% 25%,rgba(255,255,255,.45) 0 4px,transparent 5px),
-    linear-gradient(145deg,var(--citoplasma-light),var(--citoplasma) 58%,#35add8);
-  box-shadow:
-    inset 15px 16px 22px rgba(255,255,255,.48),
-    inset -12px -12px 20px rgba(0,98,155,.2);
-}
-
-/* nucleoide */
-
-#dna{
-  z-index:8;
-  width:255px;
-  height:145px;
-  left:175px;
-  top:90px;
-}
-
-.dna1,.dna2,.dna3{
-  position:absolute;
-  border-radius:50%;
-  border-style:solid;
-  box-shadow:3px 5px 5px rgba(0,0,0,.2),inset 2px 2px 2px #c9a0e4;
-}
-
-.dna1{
-  width:230px;height:115px;
-  border-width:13px;
-  border-color:var(--nucleoide);
-  transform:rotate(12deg);
-}
-
-.dna2{
-  width:180px;height:95px;
-  left:22px;top:6px;
-  border-width:11px;
-  border-color:#8b4bc3;
-  transform:rotate(-25deg);
-}
-
-.dna3{
-  width:130px;height:72px;
-  left:47px;top:18px;
-  border-width:10px;
-  border-color:#642698;
-  transform:rotate(38deg);
-}
-
-/* un solo plasmide */
-
-#plasmid{
-  z-index:9;
-  right:112px;
-  bottom:80px;
-  width:72px;
-  height:72px;
-  border-radius:50%;
-  border:12px solid var(--plasmide);
-  box-shadow:
-    4px 7px 5px rgba(0,0,0,.2),
-    inset 3px 3px 3px #efd3fa;
-}
-
-/* ribosomi */
-
-#ribosomes{
-  z-index:10;
-  inset:65px;
-}
-
-.ribo{
-  position:absolute;
-  width:19px;height:19px;
-  border-radius:50%;
-  background:radial-gradient(circle at 28% 22%,#ffd09a 0,#ff9a37 35%,var(--ribosomi) 70%,#ce5e0c);
-  box-shadow:2px 4px 3px rgba(0,0,0,.2);
-}
-.r1{left:35px;top:25px}.r2{left:75px;top:145px}
-.r3{left:125px;top:55px}.r4{left:230px;top:170px}
-.r5{left:315px;top:30px}.r6{left:390px;top:125px}
-.r7{left:430px;top:60px}.r8{left:35px;top:185px}
-.r9{left:345px;top:185px}.r10{left:450px;top:165px}
-.r11{left:280px;top:65px}.r12{left:150px;top:185px}
-
-/* ---------- PILI ATTACCATI ALLA CAPSULA ---------- */
-
-#pili{
-  z-index:1;
-  inset:0;
-  overflow:visible;
-}
-
-.pilus{
-  position:absolute;
-  width:52px;
-  height:9px;
-  border-radius:9px;
-  background:linear-gradient(#e57b29,var(--pili));
-  box-shadow:2px 3px 3px rgba(0,0,0,.22);
-  transform-origin:0 50%;
-}
-
-/* partono dal bordo, non sono più sospesi */
-.p1{left:-5px;top:45px;transform:rotate(205deg)}
-.p2{left:-12px;top:100px;transform:rotate(185deg)}
-.p3{left:-10px;top:175px;transform:rotate(170deg)}
-.p4{left:5px;top:245px;transform:rotate(150deg)}
-
-.p5{left:75px;top:12px;transform:rotate(245deg)}
-.p6{left:170px;top:-2px;transform:rotate(260deg)}
-.p7{left:280px;top:-5px;transform:rotate(270deg)}
-.p8{left:390px;top:2px;transform:rotate(285deg)}
-.p9{left:485px;top:22px;transform:rotate(305deg)}
-
-.p10{right:-7px;top:65px;transform:rotate(335deg)}
-.p11{right:-12px;top:130px;transform:rotate(355deg)}
-.p12{right:-8px;top:205px;transform:rotate(15deg)}
-.p13{right:8px;top:265px;transform:rotate(35deg)}
-
-.p14{left:85px;bottom:12px;transform:rotate(115deg)}
-.p15{left:190px;bottom:-1px;transform:rotate(100deg)}
-.p16{left:305px;bottom:-5px;transform:rotate(88deg)}
-.p17{left:415px;bottom:4px;transform:rotate(70deg)}
-
-/* ---------- FLAGELLO GRANDE ---------- */
-
-#flagellum{
-  z-index:0;
-  right:-395px;
-  top:108px;
-  width:420px;
-  height:210px;
-  overflow:visible;
-}
-
-.flag-base{
-  position:absolute;
-  left:-3px;
-  top:42px;
-  width:38px;
-  height:45px;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 25%,#8bea91,var(--flagello) 55%,#157a2c);
-  box-shadow:3px 5px 5px rgba(0,0,0,.2);
-}
-
-.flag{
-  position:absolute;
-  left:22px;
-  top:15px;
-  width:390px;
-  height:170px;
-  border-top:17px solid var(--flagello);
-  border-radius:50%;
-  transform:rotate(13deg);
-  filter:drop-shadow(4px 7px 4px rgba(0,0,0,.23));
-}
-
-.flag::after{
-  content:"";
-  position:absolute;
-  width:220px;
-  height:115px;
-  right:-5px;
-  top:-40px;
-  border-bottom:15px solid var(--flagello);
-  border-radius:50%;
-  transform:rotate(-15deg);
-}
-
-/* ---------- CONTROLLI ---------- */
-
-.controls{
-  position:relative;
-  z-index:30;
-  text-align:center;
-}
+.controls{text-align:center}
 
 button{
-  margin:6px;
-  padding:16px 29px;
-  border:0;
-  border-radius:21px;
-  font-size:18px;
-  font-weight:bold;
-  cursor:pointer;
+ border:0;
+ padding:16px 27px;
+ margin:5px;
+ border-radius:20px;
+ font-size:18px;
+ font-weight:bold;
+ cursor:pointer;
 }
 
 #life{
-  color:white;
-  background:linear-gradient(#3ed971,#19aa50);
-  box-shadow:0 7px 0 #087a35,0 11px 18px rgba(0,0,0,.17);
+ background:#25bd58;
+ color:white;
+ box-shadow:0 6px 0 #087c34;
 }
 
-#life:hover{transform:translateY(-2px)}
-
 #reset{
-  color:#174478;
-  background:linear-gradient(#fff,#e6eef5);
-  box-shadow:0 6px 0 #bdccd7;
+ background:white;
+ color:#174478;
+ box-shadow:0 6px 0 #b9cbd7;
 }
 
 #message{
-  position:relative;
-  z-index:30;
-  width:86%;
-  min-height:72px;
-  margin:18px auto;
-  padding:15px;
-  border-radius:22px;
-  background:rgba(255,255,255,.88);
-  box-shadow:0 5px 15px rgba(0,0,0,.1);
-  text-align:center;
-  font-size:18px;
-  font-weight:bold;
+ background:white;
+ margin:15px auto;
+ width:90%;
+ padding:15px;
+ border-radius:18px;
+ min-height:65px;
+ text-align:center;
+ font-weight:bold;
 }
 
-.hint{background:#fff0b9!important;color:#745700}
-.success{background:#d9ffe4!important;color:#13783b}
+.success{background:#d8ffe4!important}
+.hint{background:#fff2b7!important}
 
-/* ---------- ANIMAZIONI ---------- */
-
-.alive{
-  animation:float 1.5s infinite alternate ease-in-out;
-}
-
-@keyframes float{
-  from{transform:translate(-50%,-50%) rotate(-5deg) translateY(0)}
-  to{transform:translate(-50%,-50%) rotate(-3deg) translateY(-10px)}
-}
-
-.flagMove{
-  animation:flagMove .5s infinite alternate ease-in-out;
-  transform-origin:left center;
-}
-
-@keyframes flagMove{
-  from{transform:rotate(5deg) scaleY(.9)}
-  to{transform:rotate(18deg) scaleY(1.08)}
-}
-
-.confetti{
-  position:fixed;
-  top:-30px;
-  z-index:1000;
-  font-size:27px;
-  animation:fall 3.5s linear forwards;
-}
-
-@keyframes fall{
-  to{transform:translateY(110vh) rotate(720deg)}
-}
-
-@media(max-width:1050px){
-  .game{grid-template-columns:1fr}
-  .pieces{grid-template-columns:repeat(3,1fr)}
-}
-
-@media(max-width:720px){
-  .pieces{grid-template-columns:1fr 1fr}
-  #dropzone{
-    transform:scale(.68);
-    transform-origin:top center;
-    margin-bottom:-160px;
-  }
+@media(max-width:850px){
+ .game{grid-template-columns:1fr}
+ .pieces{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 </head>
@@ -596,131 +138,71 @@ button{
 <body>
 
 <header>
-  <div class="title">
-    <h1>🧫 Costruisci il tuo batterio!</h1>
-    <div class="subtitle">Trascina i componenti, completa la cellula e falla vivere!</div>
-  </div>
+<h1>🧫 Costruisci il tuo batterio!</h1>
+<p>Scegli i componenti e costruisci un vero modello 3D.</p>
 </header>
 
-<main class="game">
+<div class="game">
 
-<section class="toolbox">
-<h2>🧩 I pezzi del batterio</h2>
-
+<div class="toolbox">
+<h2>🧩 Componenti</h2>
 <div class="pieces">
 
-<div class="piece" draggable="true" data-part="capsule">
-<div class="preview"><span class="ball prev-capsule"></span></div>
-<div class="pname">Capsula</div>
-<div class="pdesc">Protezione aggiuntiva</div>
+<div class="piece" data-part="capsule">
+<div class="icon" style="background:#ff9438"></div>
+<div class="name">Capsula</div>
 </div>
 
-<div class="piece" draggable="true" data-part="wall">
-<div class="preview"><span class="ball prev-wall"></span></div>
-<div class="pname">Parete cellulare</div>
-<div class="pdesc">Dà forma e protezione</div>
+<div class="piece" data-part="wall">
+<div class="icon" style="background:#39b54a"></div>
+<div class="name">Parete cellulare</div>
 </div>
 
-<div class="piece" draggable="true" data-part="membrane">
-<div class="preview"><span class="ball prev-membrane"></span></div>
-<div class="pname">Membrana plasmatica</div>
-<div class="pdesc">Controlla cosa entra e cosa esce</div>
+<div class="piece" data-part="membrane">
+<div class="icon" style="background:#ffd928"></div>
+<div class="name">Membrana plasmatica</div>
 </div>
 
-<div class="piece" draggable="true" data-part="cytoplasm">
-<div class="preview"><span class="ball prev-cyto"></span></div>
-<div class="pname">Citoplasma</div>
-<div class="pdesc">L'ambiente interno della cellula</div>
+<div class="piece" data-part="cytoplasm">
+<div class="icon" style="background:#69d3f5"></div>
+<div class="name">Citoplasma</div>
 </div>
 
-<div class="piece" draggable="true" data-part="dna">
-<div class="preview"><span class="prev-dna">🧬</span></div>
-<div class="pname">Nucleoide</div>
-<div class="pdesc">Contiene il cromosoma batterico</div>
+<div class="piece" data-part="dna">
+<div class="icon" style="background:#7137b8"></div>
+<div class="name">Nucleoide</div>
 </div>
 
-<div class="piece" draggable="true" data-part="ribosomes">
-<div class="preview"><span class="prev-ribo"></span></div>
-<div class="pname">Ribosomi</div>
-<div class="pdesc">Costruiscono le proteine</div>
+<div class="piece" data-part="ribosomes">
+<div class="icon" style="background:#f58220"></div>
+<div class="name">Ribosomi</div>
 </div>
 
-<div class="piece" draggable="true" data-part="plasmid">
-<div class="preview"><span class="prev-plasmid"></span></div>
-<div class="pname">Plasmide</div>
-<div class="pdesc">Piccolo anello di DNA extra</div>
+<div class="piece" data-part="plasmid">
+<div class="icon" style="background:#c87ae6"></div>
+<div class="name">Plasmide</div>
 </div>
 
-<div class="piece" draggable="true" data-part="pili">
-<div class="preview"><span class="prev-pili"><i></i><i></i><i></i></span></div>
-<div class="pname">Pili / fimbrie</div>
-<div class="pdesc">Aiutano ad aderire</div>
+<div class="piece" data-part="pili">
+<div class="icon" style="background:#c75c19"></div>
+<div class="name">Pili / fimbrie</div>
 </div>
 
-<div class="piece" draggable="true" data-part="flagellum">
-<div class="preview"><span class="prev-flag"></span></div>
-<div class="pname">Flagello</div>
-<div class="pdesc">Permette il movimento</div>
-</div>
-
-</div>
-</section>
-
-<section class="lab">
-
-<div class="lab-title">🔬 LABORATORIO DEL PICCOLO SCIENZIATO</div>
-
-<div id="dropzone">
-
-<div class="platform"></div>
-
-<div id="instruction">
-Trascina qui<br>i componenti! 🧩
-</div>
-
-<div id="bacterium">
-
-<div class="part" id="capsule"></div>
-<div class="part" id="wall"></div>
-<div class="part" id="membrane"></div>
-<div class="part" id="cytoplasm"></div>
-
-<div class="part" id="dna">
-<div class="dna1"></div>
-<div class="dna2"></div>
-<div class="dna3"></div>
-</div>
-
-<div class="part" id="ribosomes">
-<span class="ribo r1"></span><span class="ribo r2"></span>
-<span class="ribo r3"></span><span class="ribo r4"></span>
-<span class="ribo r5"></span><span class="ribo r6"></span>
-<span class="ribo r7"></span><span class="ribo r8"></span>
-<span class="ribo r9"></span><span class="ribo r10"></span>
-<span class="ribo r11"></span><span class="ribo r12"></span>
-</div>
-
-<div class="part" id="plasmid"></div>
-
-<div class="part" id="pili">
-<span class="pilus p1"></span><span class="pilus p2"></span>
-<span class="pilus p3"></span><span class="pilus p4"></span>
-<span class="pilus p5"></span><span class="pilus p6"></span>
-<span class="pilus p7"></span><span class="pilus p8"></span>
-<span class="pilus p9"></span><span class="pilus p10"></span>
-<span class="pilus p11"></span><span class="pilus p12"></span>
-<span class="pilus p13"></span><span class="pilus p14"></span>
-<span class="pilus p15"></span><span class="pilus p16"></span>
-<span class="pilus p17"></span>
-</div>
-
-<div class="part" id="flagellum">
-<div class="flag-base"></div>
-<div class="flag"></div>
+<div class="piece" data-part="flagellum">
+<div class="icon" style="background:#24a845"></div>
+<div class="name">Flagello</div>
 </div>
 
 </div>
 </div>
+
+<div class="stage">
+
+<div class="instructions">
+🖱️ Trascina per ruotare il batterio • usa la rotella per avvicinarti
+</div>
+
+<div id="scene"></div>
 
 <div class="controls">
 <button id="life">▶ DAI VITA AL BATTERIO!</button>
@@ -728,148 +210,444 @@ Trascina qui<br>i componenti! 🧩
 </div>
 
 <div id="message">
-🔬 Quali strutture servono a un batterio per vivere? Trascina i componenti e prova a scoprirlo!
+🔬 Aggiungi le strutture necessarie per costruire il batterio.
 </div>
 
-</section>
-</main>
+</div>
+</div>
 
-<script>
+<script type="importmap">
+{
+ "imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+ }
+}
+</script>
+
+<script type="module">
+
+import * as THREE from "three";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+
+const container=document.getElementById("scene");
+
+const scene=new THREE.Scene();
+
+const camera=new THREE.PerspectiveCamera(
+ 40,
+ container.clientWidth/container.clientHeight,
+ .1,
+ 100
+);
+
+camera.position.set(0,1.5,13);
+
+const renderer=new THREE.WebGLRenderer({
+ antialias:true,
+ alpha:true
+});
+
+renderer.setSize(container.clientWidth,container.clientHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+
+container.appendChild(renderer.domElement);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;
+controls.minDistance=8;
+controls.maxDistance=18;
+
+/* LUCI */
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x557799,2.5));
+
+const key=new THREE.DirectionalLight(0xffffff,5);
+key.position.set(4,8,8);
+key.castShadow=true;
+scene.add(key);
+
+const fill=new THREE.PointLight(0x8adfff,3);
+fill.position.set(-6,2,5);
+scene.add(fill);
+
+/* GRUPPO BATTERIO */
+
+const bacterium=new THREE.Group();
+bacterium.rotation.z=-.12;
+scene.add(bacterium);
+
+const objects={};
+
+function mat(color,transparent=false,opacity=1){
+ return new THREE.MeshPhysicalMaterial({
+  color,
+  roughness:.22,
+  metalness:.03,
+  clearcoat:1,
+  clearcoatRoughness:.12,
+  transparent,
+  opacity
+ });
+}
+
+/* forma batterica */
+
+function cellShape(scale,color,opacity=1){
+
+ const group=new THREE.Group();
+
+ const cylinder=new THREE.Mesh(
+  new THREE.CylinderGeometry(
+   1.75*scale,
+   1.75*scale,
+   4.5*scale,
+   64
+  ),
+  mat(color,opacity<1,opacity)
+ );
+
+ cylinder.rotation.z=Math.PI/2;
+
+ const sphere1=new THREE.Mesh(
+  new THREE.SphereGeometry(1.75*scale,64,32),
+  mat(color,opacity<1,opacity)
+ );
+
+ sphere1.position.x=-2.25*scale;
+
+ const sphere2=sphere1.clone();
+ sphere2.position.x=2.25*scale;
+
+ group.add(cylinder,sphere1,sphere2);
+
+ group.visible=false;
+ bacterium.add(group);
+
+ return group;
+}
+
+/* STRATI */
+
+objects.capsule=cellShape(1.08,0xff9438,.30);
+objects.wall=cellShape(1.00,0x38b54a,.34);
+objects.membrane=cellShape(.92,0xffd928,.42);
+objects.cytoplasm=cellShape(.84,0x62cef3,.70);
+
+/* NUCLEOIDE */
+
+const dna=new THREE.Group();
+
+const dnaCurve=new THREE.CatmullRomCurve3([
+ new THREE.Vector3(-1.6,.3,.3),
+ new THREE.Vector3(-1,.8,.5),
+ new THREE.Vector3(-.3,-.5,.6),
+ new THREE.Vector3(.4,.7,.5),
+ new THREE.Vector3(1.3,-.4,.4),
+ new THREE.Vector3(.7,-.8,.2),
+ new THREE.Vector3(-.5,.2,.1),
+ new THREE.Vector3(-1.4,-.3,.3)
+],true);
+
+const dnaTube=new THREE.Mesh(
+ new THREE.TubeGeometry(dnaCurve,150,.13,12,true),
+ mat(0x7436b7)
+);
+
+dna.add(dnaTube);
+dna.visible=false;
+bacterium.add(dna);
+objects.dna=dna;
+
+/* RIBOSOMI */
+
+const ribosomes=new THREE.Group();
+
+for(let i=0;i<38;i++){
+
+ const r=new THREE.Mesh(
+  new THREE.SphereGeometry(.105,18,18),
+  mat(0xf58220)
+ );
+
+ const angle=Math.random()*Math.PI*2;
+ const radius=Math.random()*1.35;
+
+ r.position.set(
+  THREE.MathUtils.randFloat(-2.4,2.4),
+  Math.cos(angle)*radius,
+  Math.sin(angle)*radius
+ );
+
+ ribosomes.add(r);
+}
+
+ribosomes.visible=false;
+bacterium.add(ribosomes);
+objects.ribosomes=ribosomes;
+
+/* UN SOLO PLASMIDE */
+
+const plasmid=new THREE.Mesh(
+ new THREE.TorusGeometry(.45,.09,18,60),
+ mat(0xc77be5)
+);
+
+plasmid.position.set(1.55,-.65,1);
+plasmid.rotation.x=.7;
+plasmid.visible=false;
+
+bacterium.add(plasmid);
+objects.plasmid=plasmid;
+
+/* PILI — ATTACCATI ALLA CAPSULA */
+
+const pili=new THREE.Group();
+
+function makePilus(position,direction){
+
+ const length=.62;
+
+ const geometry=new THREE.CylinderGeometry(
+  .045,.06,length,12
+ );
+
+ const mesh=new THREE.Mesh(
+  geometry,
+  mat(0xc65a18)
+ );
+
+ mesh.position.copy(position)
+     .add(direction.clone().multiplyScalar(length/2));
+
+ mesh.quaternion.setFromUnitVectors(
+  new THREE.Vector3(0,1,0),
+  direction.clone().normalize()
+ );
+
+ pili.add(mesh);
+}
+
+for(let i=0;i<42;i++){
+
+ const x=THREE.MathUtils.randFloat(-2.5,2.5);
+ const angle=Math.random()*Math.PI*2;
+
+ const y=Math.cos(angle)*1.82;
+ const z=Math.sin(angle)*1.82;
+
+ const direction=new THREE.Vector3(0,y,z).normalize();
+
+ makePilus(
+  new THREE.Vector3(x,y,z),
+  direction
+ );
+}
+
+pili.visible=false;
+bacterium.add(pili);
+objects.pili=pili;
+
+/* FLAGELLO GRANDE */
+
+const flagGroup=new THREE.Group();
+
+const flagCurve=new THREE.CatmullRomCurve3([
+ new THREE.Vector3(3.8,0,0),
+ new THREE.Vector3(4.8,.7,0),
+ new THREE.Vector3(5.7,-.7,.2),
+ new THREE.Vector3(6.7,.8,.1),
+ new THREE.Vector3(7.7,-.6,.1),
+ new THREE.Vector3(8.7,.5,0)
+]);
+
+const flagMesh=new THREE.Mesh(
+ new THREE.TubeGeometry(flagCurve,160,.15,18,false),
+ mat(0x20a843)
+);
+
+flagMesh.castShadow=true;
+flagGroup.add(flagMesh);
+
+const motor=new THREE.Mesh(
+ new THREE.SphereGeometry(.28,24,24),
+ mat(0x20a843)
+);
+
+motor.position.set(3.7,0,0);
+
+flagGroup.add(motor);
+
+flagGroup.visible=false;
+bacterium.add(flagGroup);
+
+objects.flagellum=flagGroup;
+
+/* PIATTAFORMA */
+
+const platform=new THREE.Mesh(
+ new THREE.CylinderGeometry(5.5,5.5,.25,80),
+ new THREE.MeshPhysicalMaterial({
+  color:0xbceeff,
+  transparent:true,
+  opacity:.65,
+  roughness:.15,
+  clearcoat:1
+ })
+);
+
+platform.position.y=-2.6;
+platform.receiveShadow=true;
+scene.add(platform);
+
+/* INTERAZIONE */
+
 const selected=new Set();
 
+document.querySelectorAll(".piece").forEach(piece=>{
+
+ piece.onclick=()=>{
+
+  const part=piece.dataset.part;
+
+  if(selected.has(part)){
+   selected.delete(part);
+   objects[part].visible=false;
+   piece.classList.remove("selected");
+  }else{
+   selected.add(part);
+   objects[part].visible=true;
+   piece.classList.add("selected");
+  }
+
+ };
+
+});
+
+/* VITA */
+
 const essential=[
-"wall",
-"membrane",
-"cytoplasm",
-"dna",
-"ribosomes"
+ "wall",
+ "membrane",
+ "cytoplasm",
+ "dna",
+ "ribosomes"
 ];
 
 const clues={
-wall:"🧱 Manca la struttura che dà forma e protezione al nostro batterio.",
-membrane:"🚪 Manca la barriera che controlla gli scambi tra interno ed esterno.",
-cytoplasm:"💧 Manca l'ambiente interno della cellula.",
-dna:"🧬 Il batterio non trova le sue istruzioni genetiche!",
-ribosomes:"⚙️ Il batterio non riesce a costruire le proteine."
+ wall:"🧱 Manca qualcosa che dia forma e protezione.",
+ membrane:"🚪 Manca la struttura che controlla gli scambi.",
+ cytoplasm:"💧 Manca l'ambiente interno della cellula.",
+ dna:"🧬 Mancano le istruzioni genetiche!",
+ ribosomes:"⚙️ Chi costruirà le proteine?"
 };
 
-const dropzone=document.getElementById("dropzone");
-const bacterium=document.getElementById("bacterium");
-const message=document.getElementById("message");
-const instruction=document.getElementById("instruction");
+let alive=false;
 
-function addPart(part){
-  selected.add(part);
-  const el=document.getElementById(part);
-  if(el) el.style.opacity="1";
+document.getElementById("life").onclick=()=>{
 
-  document.querySelectorAll(".piece").forEach(p=>{
-    if(p.dataset.part===part)p.classList.add("selected");
-  });
+ const missing=essential.filter(x=>!selected.has(x));
 
-  instruction.style.display="none";
-  message.className="";
-  message.innerHTML="🔬 Ottimo! Continua a costruire il tuo batterio.";
-}
+ const message=document.getElementById("message");
 
-function removePart(part){
-  selected.delete(part);
-  const el=document.getElementById(part);
-  if(el)el.style.opacity="0";
+ if(missing.length){
 
-  document.querySelectorAll(".piece").forEach(p=>{
-    if(p.dataset.part===part)p.classList.remove("selected");
-  });
-}
+  const x=missing[Math.floor(Math.random()*missing.length)];
 
-document.querySelectorAll(".piece").forEach(piece=>{
-  piece.addEventListener("dragstart",e=>{
-    e.dataTransfer.setData("text/plain",piece.dataset.part);
-  });
+  message.className="hint";
+  message.innerHTML=
+  "🤔 <b>Il batterio non è ancora pronto!</b><br>"+
+  clues[x];
 
-  piece.addEventListener("click",()=>{
-    const part=piece.dataset.part;
-    selected.has(part)?removePart(part):addPart(part);
-  });
-});
+  return;
+ }
 
-dropzone.addEventListener("dragover",e=>e.preventDefault());
+ alive=true;
 
-dropzone.addEventListener("drop",e=>{
-  e.preventDefault();
-  addPart(e.dataTransfer.getData("text/plain"));
-});
+ message.className="success";
 
-document.getElementById("life").addEventListener("click",()=>{
-  const missing=essential.filter(x=>!selected.has(x));
+ let text=
+ "🎉 <b>COMPLIMENTI!</b> Hai dato vita al batterio!";
 
-  if(missing.length){
-    const m=missing[Math.floor(Math.random()*missing.length)];
-    message.className="hint";
-    message.innerHTML=
-      "🤔 <b>Il batterio non è ancora pronto!</b><br><br>"+
-      clues[m]+
-      "<br><br>Quale componente potrebbe mancare?";
-    bacterium.classList.remove("alive");
-    return;
-  }
+ if(selected.has("capsule"))
+  text+="<br>🛡️ La capsula offre protezione aggiuntiva.";
 
-  bacterium.classList.add("alive");
+ if(selected.has("plasmid"))
+  text+="<br>🧬 Il plasmide contiene DNA extra.";
+
+ if(selected.has("pili"))
+  text+="<br>📍 Pili e fimbrie possono favorire l'adesione.";
+
+ if(selected.has("flagellum"))
+  text+="<br>🏊 Il flagello permette il movimento.";
+
+ message.innerHTML=text;
+};
+
+/* RESET */
+
+document.getElementById("reset").onclick=()=>{
+
+ selected.clear();
+ alive=false;
+
+ Object.values(objects).forEach(x=>x.visible=false);
+
+ document.querySelectorAll(".piece")
+ .forEach(x=>x.classList.remove("selected"));
+
+ const message=document.getElementById("message");
+ message.className="";
+ message.innerHTML=
+ "🔬 Aggiungi le strutture necessarie per costruire il batterio.";
+};
+
+/* ANIMAZIONE */
+
+const clock=new THREE.Clock();
+
+function animate(){
+
+ requestAnimationFrame(animate);
+
+ const t=clock.getElapsedTime();
+
+ if(alive){
+
+  bacterium.position.y=
+   Math.sin(t*2)*.12;
+
+  bacterium.rotation.y+=.003;
 
   if(selected.has("flagellum")){
-    document.querySelector(".flag").classList.add("flagMove");
+   flagGroup.rotation.x=
+    Math.sin(t*8)*.12;
   }
+ }
 
-  let txt=
-  "🎉 <b>COMPLIMENTI!</b><br>"+
-  "Hai dato vita al tuo batterio! 🧫<br><br>"+
-  "Hai inserito tutte le strutture fondamentali del modello.";
-
-  if(selected.has("capsule"))
-    txt+="<br>🛡️ La capsula offre una protezione aggiuntiva.";
-
-  if(selected.has("plasmid"))
-    txt+="<br>🧬 Il plasmide è DNA extra e può contenere, per esempio, geni di resistenza agli antibiotici.";
-
-  if(selected.has("pili"))
-    txt+="<br>📍 Pili e fimbrie possono aiutare il batterio ad aderire.";
-
-  if(selected.has("flagellum"))
-    txt+="<br>🏊 Il flagello può permettere al batterio di muoversi.";
-
-  message.className="success";
-  message.innerHTML=txt;
-  celebrate();
-});
-
-function celebrate(){
-  const icons=["🎉","🧫","🧬","🔬","✨"];
-  for(let i=0;i<35;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.innerText=icons[Math.floor(Math.random()*icons.length)];
-    c.style.left=Math.random()*100+"vw";
-    c.style.animationDelay=Math.random()*1.3+"s";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),5000);
-  }
+ controls.update();
+ renderer.render(scene,camera);
 }
 
-document.getElementById("reset").addEventListener("click",()=>{
-  selected.clear();
+animate();
 
-  document.querySelectorAll(".part").forEach(x=>x.style.opacity="0");
-  document.querySelectorAll(".piece").forEach(x=>x.classList.remove("selected"));
+/* RESPONSIVE */
 
-  bacterium.classList.remove("alive");
-  document.querySelector(".flag").classList.remove("flagMove");
+window.addEventListener("resize",()=>{
 
-  instruction.style.display="block";
-  message.className="";
-  message.innerHTML=
-  "🔬 Quali strutture servono a un batterio per vivere? Trascina i componenti e prova a scoprirlo!";
+ camera.aspect=
+ container.clientWidth/container.clientHeight;
+
+ camera.updateProjectionMatrix();
+
+ renderer.setSize(
+  container.clientWidth,
+  container.clientHeight
+ );
+
 });
-</script>
 
+</script>
 </body>
 </html>
