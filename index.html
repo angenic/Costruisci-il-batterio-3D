@@ -2,2761 +2,1804 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Costruisci il tuo batterio!</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 :root{
-  --blu:#073b82;
+  --blue:#063b82;
+}
+
+html,body{
+  margin:0;
+  min-height:100%;
 }
 
 body{
-  margin:0;
-  min-height:100vh;
-
-  font-family:
-  "Trebuchet MS",
-  Arial,
-  sans-serif;
-
-  color:var(--blu);
-
+  font-family:"Trebuchet MS",Arial,sans-serif;
+  color:var(--blue);
   background:
-  radial-gradient(
-    circle at 50% 30%,
-    #f7fdff 0%,
-    #dff6ff 38%,
-    #bce7fb 100%
-  );
+    radial-gradient(circle at 55% 30%,#f7fdff 0%,#d9f5ff 50%,#b9e6fa 100%);
 }
 
-
-/* =========================
-   TITOLO
-========================= */
+/* ==============================
+   HEADER
+============================== */
 
 header{
   text-align:center;
-  padding:14px 10px 8px;
+  padding:18px 10px 8px;
 }
 
 h1{
   margin:0;
-
-  font-size:
-  clamp(34px,4.5vw,60px);
-
-  color:#073b82;
-
-  text-shadow:
-  0 3px 0 white;
+  font-size:clamp(38px,5vw,66px);
+  font-weight:900;
+  letter-spacing:-1px;
+  color:#063b82;
+  text-shadow:0 3px 0 white;
 }
 
 header p{
   margin:5px 0 0;
-
-  font-size:19px;
-  font-weight:bold;
+  font-size:20px;
+  font-weight:700;
 }
 
-
-/* =========================
+/* ==============================
    LAYOUT
-========================= */
+============================== */
 
 .game{
-
-  width:min(1550px,98%);
-
+  width:min(1580px,98%);
   margin:auto;
-
   display:grid;
-
-  grid-template-columns:
-  330px 1fr;
-
+  grid-template-columns:340px 1fr;
   gap:18px;
-
-  padding-bottom:20px;
-
+  padding-bottom:22px;
 }
 
-
-/* =========================
-   PANNELLO COMPONENTI
-========================= */
-
 .toolbox{
-
-  background:
-  rgba(255,255,255,.90);
-
+  background:rgba(255,255,255,.91);
   border-radius:30px;
-
   padding:17px;
-
-  box-shadow:
-  0 15px 35px
-  rgba(32,95,130,.18);
-
+  box-shadow:0 15px 35px rgba(31,91,125,.18);
 }
 
 .toolbox h2{
-
-  margin:0 0 15px;
-
+  margin:2px 0 5px;
   text-align:center;
-
-  font-size:25px;
-
+  font-size:27px;
 }
 
+.toolbox-intro{
+  text-align:center;
+  margin:0 0 15px;
+  font-size:13px;
+}
+
+/* ==============================
+   CARTE COMPONENTI
+============================== */
 
 .pieces{
-
   display:grid;
-
-  grid-template-columns:
-  1fr 1fr;
-
+  grid-template-columns:1fr 1fr;
   gap:11px;
-
 }
-
 
 .piece{
-
-  min-height:125px;
-
-  padding:10px 5px;
-
-  border:
-
-  3px solid
-  transparent;
-
-  border-radius:20px;
-
-  background:
-  linear-gradient(
-    145deg,
-    white,
-    #eff9fd
-  );
-
-  box-shadow:
-  0 6px 14px
-  rgba(0,0,0,.12);
-
+  min-height:128px;
+  padding:11px 5px;
+  border:3px solid transparent;
+  border-radius:21px;
+  background:linear-gradient(145deg,#fff,#eff9fd);
+  box-shadow:0 6px 15px rgba(0,0,0,.12);
   text-align:center;
-
   cursor:pointer;
-
-  transition:.2s;
-
+  transition:.18s;
   user-select:none;
-
 }
-
 
 .piece:hover{
-
-  transform:
-  translateY(-4px)
-  scale(1.02);
-
+  transform:translateY(-4px) scale(1.015);
 }
-
 
 .piece.selected{
-
-  border-color:
-  #25b85b;
-
-  background:
-  #eaffef;
-
+  border-color:#22b653;
+  background:#edfff2;
 }
 
+.preview{
+  height:60px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-.icon{
+/* icone lucide */
 
-  width:74px;
-
-  height:48px;
-
-  margin:
-  0 auto 8px;
-
+.blob{
+  width:76px;
+  height:46px;
   border-radius:50%;
-
   box-shadow:
-
-  inset
-  12px 10px 15px
-  rgba(255,255,255,.65),
-
-  inset
-  -8px -10px 12px
-  rgba(0,0,0,.18),
-
-  0 6px 8px
-  rgba(0,0,0,.18);
-
+    inset 12px 10px 15px rgba(255,255,255,.72),
+    inset -8px -9px 13px rgba(0,0,0,.18),
+    0 7px 9px rgba(0,0,0,.17);
 }
 
+.capsule-icon{background:#ff8722}
+.wall-icon{background:#24bd4c}
+.membrane-icon{background:#ffd326}
+.cyto-icon{background:#55caf2}
+.dna-icon{background:#7332bc}
+.ribo-icon{background:#f58220}
+.plasmid-icon{background:#d987ef}
+.pili-icon{background:#c85816}
+.flag-icon{background:#20ae4a}
 
-.name{
-
-  font-weight:900;
-
+.piece-name{
   font-size:15px;
-
+  font-weight:900;
 }
 
-
-.desc{
-
+.piece-desc{
   margin-top:4px;
-
   font-size:12px;
-
-  color:#557188;
-
+  color:#557189;
 }
 
-
-/* =========================
+/* ==============================
    SCENA
-========================= */
+============================== */
 
 .stage{
-
   position:relative;
-
+  min-height:790px;
   overflow:hidden;
-
-  min-height:780px;
-
   border-radius:30px;
 
   background:
+    radial-gradient(circle at 50% 38%,#f5fdff 0%,#ddf7ff 45%,#c4eafa 100%);
 
-  radial-gradient(
-    circle at 50% 35%,
-    #f4fdff,
-    #d8f4ff 55%,
-    #c5eafa
-  );
-
-  box-shadow:
-  0 15px 35px
-  rgba(32,95,130,.18);
-
+  box-shadow:0 15px 35px rgba(31,91,125,.18);
 }
-
 
 #scene{
-
   width:100%;
-
-  height:620px;
-
+  height:630px;
   cursor:grab;
-
 }
-
 
 .tip{
-
   position:absolute;
-
-  z-index:10;
-
-  top:15px;
-
+  z-index:20;
   left:50%;
-
-  transform:
-  translateX(-50%);
-
-  padding:
-  10px 20px;
-
-  border-radius:22px;
-
-  background:
-  rgba(255,255,255,.92);
-
-  box-shadow:
-  0 5px 14px
-  rgba(0,0,0,.1);
-
-  font-weight:bold;
-
-  pointer-events:none;
-
+  top:16px;
+  transform:translateX(-50%);
+  padding:10px 20px;
+  border-radius:24px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 5px 15px rgba(0,0,0,.09);
+  font-weight:800;
+  white-space:nowrap;
 }
 
-
-/* =========================
-   BOTTONI
-========================= */
+/* ==============================
+   CONTROLLI
+============================== */
 
 .controls{
-
   text-align:center;
-
 }
-
 
 button{
-
-  margin:6px;
-
-  padding:
-  17px 30px;
-
   border:0;
-
-  border-radius:21px;
-
+  border-radius:22px;
+  padding:17px 30px;
+  margin:6px;
   font-size:19px;
-
   font-weight:900;
-
   cursor:pointer;
-
 }
-
 
 #life{
-
   color:white;
-
-  background:
-  linear-gradient(
-    #31d86a,
-    #13ad4c
-  );
-
+  background:linear-gradient(#32d96b,#12ad4c);
   box-shadow:
-
-  0 7px 0
-  #087b35,
-
-  0 12px 18px
-  rgba(0,0,0,.15);
-
+    0 7px 0 #087a34,
+    0 12px 20px rgba(0,0,0,.15);
 }
-
 
 #reset{
-
   color:#174478;
-
   background:white;
-
   box-shadow:
-
-  0 7px 0
-  #bacbd7,
-
-  0 12px 18px
-  rgba(0,0,0,.12);
-
+    0 7px 0 #b8cbd7,
+    0 12px 20px rgba(0,0,0,.11);
 }
-
 
 #message{
-
   width:88%;
-
   min-height:68px;
-
-  margin:
-  17px auto;
-
+  margin:17px auto;
   padding:15px;
-
-  border-radius:20px;
-
+  border-radius:21px;
   background:white;
-
   text-align:center;
-
   font-size:17px;
-
-  font-weight:bold;
-
-  box-shadow:
-  0 5px 15px
-  rgba(0,0,0,.1);
-
+  font-weight:800;
+  box-shadow:0 5px 15px rgba(0,0,0,.09);
 }
-
 
 .hint{
-
-  background:
-  #fff0b7 !important;
-
-  color:#755900;
-
+  background:#fff0b7!important;
+  color:#745800;
 }
-
 
 .success{
-
-  background:
-  #dcffe5 !important;
-
-  color:#14753a;
-
+  background:#dcffe6!important;
+  color:#127239;
 }
-
 
 @media(max-width:950px){
-
-  .game{
-    grid-template-columns:1fr;
-  }
-
-  .pieces{
-    grid-template-columns:
-    repeat(3,1fr);
-  }
-
+  .game{grid-template-columns:1fr}
+  .pieces{grid-template-columns:repeat(3,1fr)}
 }
-
 
 @media(max-width:650px){
-
-  .pieces{
-    grid-template-columns:
-    1fr 1fr;
+  .pieces{grid-template-columns:1fr 1fr}
+  #scene{height:520px}
+  .tip{
+    width:90%;
+    white-space:normal;
+    text-align:center;
   }
-
-  #scene{
-    height:520px;
-  }
-
 }
-
 </style>
 </head>
 
-
 <body>
 
-
 <header>
-
-<h1>
-🧫 Costruisci il tuo batterio!
-</h1>
-
-<p>
-Aggiungi i componenti e completa il modello 3D.
-</p>
-
+  <h1>🧫 Costruisci il tuo batterio!</h1>
+  <p>Aggiungi i componenti e completa il modello 3D.</p>
 </header>
-
-
 
 <main class="game">
 
-
-<!-- ======================
+<!-- ==============================
      COMPONENTI
-====================== -->
+============================== -->
 
 <aside class="toolbox">
 
-<h2>
-🧩 Componenti da aggiungere
-</h2>
+<h2>🧩 Componenti da aggiungere</h2>
 
+<p class="toolbox-intro">
+Clicca per aggiungere o rimuovere i componenti
+</p>
 
 <div class="pieces">
 
-
-<div
-class="piece"
-data-part="capsule">
-
-<div
-class="icon"
-style="background:#ff8a25">
+<div class="piece" data-part="capsule">
+  <div class="preview">
+    <div class="blob capsule-icon"></div>
+  </div>
+  <div class="piece-name">Capsula</div>
+  <div class="piece-desc">Protezione aggiuntiva</div>
 </div>
 
-<div class="name">
-Capsula
+<div class="piece" data-part="wall">
+  <div class="preview">
+    <div class="blob wall-icon"></div>
+  </div>
+  <div class="piece-name">Parete cellulare</div>
+  <div class="piece-desc">Dà forma e protezione</div>
 </div>
 
-<div class="desc">
-Protezione aggiuntiva
+<div class="piece" data-part="membrane">
+  <div class="preview">
+    <div class="blob membrane-icon"></div>
+  </div>
+  <div class="piece-name">Membrana plasmatica</div>
+  <div class="piece-desc">Controlla gli scambi</div>
 </div>
 
+<div class="piece" data-part="cytoplasm">
+  <div class="preview">
+    <div class="blob cyto-icon"></div>
+  </div>
+  <div class="piece-name">Citoplasma</div>
+  <div class="piece-desc">Ambiente interno</div>
 </div>
 
-
-
-<div
-class="piece"
-data-part="wall">
-
-<div
-class="icon"
-style="background:#27bd50">
+<div class="piece" data-part="dna">
+  <div class="preview">
+    <div class="blob dna-icon"></div>
+  </div>
+  <div class="piece-name">Nucleoide</div>
+  <div class="piece-desc">Cromosoma batterico</div>
 </div>
 
-<div class="name">
-Parete cellulare
+<div class="piece" data-part="ribosomes">
+  <div class="preview">
+    <div class="blob ribo-icon"></div>
+  </div>
+  <div class="piece-name">Ribosomi</div>
+  <div class="piece-desc">Producono proteine</div>
 </div>
 
-<div class="desc">
-Dà forma e protezione
+<div class="piece" data-part="plasmid">
+  <div class="preview">
+    <div class="blob plasmid-icon"></div>
+  </div>
+  <div class="piece-name">Plasmide</div>
+  <div class="piece-desc">Un anello di DNA extra</div>
 </div>
 
+<div class="piece" data-part="pili">
+  <div class="preview">
+    <div class="blob pili-icon"></div>
+  </div>
+  <div class="piece-name">Pili / fimbrie</div>
+  <div class="piece-desc">Favoriscono l'adesione</div>
 </div>
 
-
-
-<div
-class="piece"
-data-part="membrane">
-
-<div
-class="icon"
-style="background:#ffd326">
-</div>
-
-<div class="name">
-Membrana plasmatica
-</div>
-
-<div class="desc">
-Controlla gli scambi
-</div>
-
-</div>
-
-
-
-<div
-class="piece"
-data-part="cytoplasm">
-
-<div
-class="icon"
-style="background:#56caf2">
-</div>
-
-<div class="name">
-Citoplasma
-</div>
-
-<div class="desc">
-Ambiente interno
+<div class="piece" data-part="flagellum">
+  <div class="preview">
+    <div class="blob flag-icon"></div>
+  </div>
+  <div class="piece-name">Flagello</div>
+  <div class="piece-desc">Permette il movimento</div>
 </div>
 
 </div>
-
-
-
-<div
-class="piece"
-data-part="dna">
-
-<div
-class="icon"
-style="background:#7432bb">
-</div>
-
-<div class="name">
-Nucleoide
-</div>
-
-<div class="desc">
-Cromosoma batterico
-</div>
-
-</div>
-
-
-
-<div
-class="piece"
-data-part="ribosomes">
-
-<div
-class="icon"
-style="background:#f58220">
-</div>
-
-<div class="name">
-Ribosomi
-</div>
-
-<div class="desc">
-Producono proteine
-</div>
-
-</div>
-
-
-
-<div
-class="piece"
-data-part="plasmid">
-
-<div
-class="icon"
-style="background:#d886ef">
-</div>
-
-<div class="name">
-Plasmide
-</div>
-
-<div class="desc">
-Un anello di DNA extra
-</div>
-
-</div>
-
-
-
-<div
-class="piece"
-data-part="pili">
-
-<div
-class="icon"
-style="background:#c95a18">
-</div>
-
-<div class="name">
-Pili / fimbrie
-</div>
-
-<div class="desc">
-Favoriscono l'adesione
-</div>
-
-</div>
-
-
-
-<div
-class="piece"
-data-part="flagellum">
-
-<div
-class="icon"
-style="background:#20ae4a">
-</div>
-
-<div class="name">
-Flagello
-</div>
-
-<div class="desc">
-Permette il movimento
-</div>
-
-</div>
-
-
-</div>
-
 </aside>
 
-
-
-<!-- ======================
-     AREA 3D
-====================== -->
+<!-- ==============================
+     AREA GIOCO
+============================== -->
 
 <section class="stage">
 
-
 <div class="tip">
-
-🖱️ Trascina per ruotare
-• rotella per zoom
-
+🖱️ Trascina per ruotare il modello • usa la rotella per zoom
 </div>
-
 
 <div id="scene"></div>
 
-
 <div class="controls">
-
-<button id="life">
-
-▶ DAI VITA AL BATTERIO!
-
-</button>
-
-
-<button id="reset">
-
-↻ Ricomincia
-
-</button>
-
+  <button id="life">▶ DAI VITA AL BATTERIO!</button>
+  <button id="reset">↻ Ricomincia</button>
 </div>
-
 
 <div id="message">
-
-🔬 Quali sono le strutture principali
-di una cellula batterica?
-
+💡 Quali sono le strutture principali di una cellula batterica?
 </div>
-
 
 </section>
 
 </main>
 
-
-
-<!-- ======================
-     THREE.JS
-====================== -->
+<!-- THREE.JS -->
 
 <script type="importmap">
-
 {
-
-"imports":{
-
-"three":
-"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-
-"three/addons/":
-"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+    "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+  }
 }
-
-}
-
 </script>
-
-
 
 <script type="module">
 
+import * as THREE from "three";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 
-import * as THREE
-from "three";
-
-
-import {
-OrbitControls
-}
-from
-"three/addons/controls/OrbitControls.js";
-
-
-
-/* ==================================================
+/* ==========================================================
    SCENA
-================================================== */
+========================================================== */
 
+const container = document.getElementById("scene");
 
-const container=
-document.getElementById(
-"scene"
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+  32,
+  container.clientWidth / container.clientHeight,
+  0.1,
+  100
 );
 
+/* Inquadratura simile al riferimento */
 
-const scene=
-new THREE.Scene();
+camera.position.set(0,0.5,17);
 
-
-
-const camera=
-new THREE.PerspectiveCamera(
-
-31,
-
-container.clientWidth /
-container.clientHeight,
-
-0.1,
-
-100
-
-);
-
-
-/*
-Camera più distante:
-il flagello rimane dentro
-l'inquadratura.
-*/
-
-camera.position.set(
-0,
-1.0,
-16
-);
-
-
-
-const renderer=
-new THREE.WebGLRenderer({
-
-antialias:true,
-
-alpha:true
-
+const renderer = new THREE.WebGLRenderer({
+  antialias:true,
+  alpha:true
 });
-
 
 renderer.setPixelRatio(
-
-Math.min(
-window.devicePixelRatio,
-2
-)
-
+  Math.min(window.devicePixelRatio,2)
 );
-
 
 renderer.setSize(
-
-container.clientWidth,
-
-container.clientHeight
-
+  container.clientWidth,
+  container.clientHeight
 );
 
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-renderer.shadowMap.enabled=true;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.25;
 
-renderer.shadowMap.type=
-THREE.PCFSoftShadowMap;
-
-
-renderer.localClippingEnabled=true;
-
-
-renderer.outputColorSpace=
-THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
 
 
-renderer.toneMapping=
-THREE.ACESFilmicToneMapping;
-
-
-renderer.toneMappingExposure=
-1.2;
-
-
-container.appendChild(
-renderer.domElement
-);
-
-
-
-/* ==================================================
+/* ==========================================================
    CONTROLLI
-================================================== */
+========================================================== */
 
-
-const controls=
-new OrbitControls(
-
-camera,
-
-renderer.domElement
-
+const controls = new OrbitControls(
+  camera,
+  renderer.domElement
 );
 
+controls.enableDamping = true;
 
-controls.enableDamping=true;
+controls.target.set(0,0,0);
 
+controls.minDistance = 11;
+controls.maxDistance = 22;
 
-controls.target.set(
-0,
-0,
-0
-);
+/* Evita di capovolgere completamente il modello */
 
-
-controls.minDistance=10;
-
-
-controls.maxDistance=21;
+controls.minPolarAngle = Math.PI * 0.25;
+controls.maxPolarAngle = Math.PI * 0.75;
 
 
-
-/* ==================================================
+/* ==========================================================
    LUCI
-================================================== */
-
-
-const hemi=
-new THREE.HemisphereLight(
-
-0xffffff,
-
-0x5e91aa,
-
-3.1
-
-);
-
+========================================================== */
 
 scene.add(
-hemi
+  new THREE.HemisphereLight(
+    0xffffff,
+    0x69a1bb,
+    3.2
+  )
 );
 
-
-
-const mainLight=
-new THREE.DirectionalLight(
-
-0xffffff,
-
-5.5
-
+const keyLight = new THREE.DirectionalLight(
+  0xffffff,
+  6
 );
 
+keyLight.position.set(-5,8,10);
+keyLight.castShadow = true;
 
-mainLight.position.set(
+scene.add(keyLight);
 
--4,
-
-7,
-
-9
-
+const sideLight = new THREE.DirectionalLight(
+  0x8fe6ff,
+  3.5
 );
 
+sideLight.position.set(7,3,7);
 
-mainLight.castShadow=true;
+scene.add(sideLight);
 
-
-scene.add(
-mainLight
+const warmLight = new THREE.PointLight(
+  0xffc56c,
+  2.5,
+  30
 );
 
+warmLight.position.set(-6,2,7);
+
+scene.add(warmLight);
 
 
-const rightLight=
-new THREE.DirectionalLight(
-
-0x9ee8ff,
-
-3
-
-);
-
-
-rightLight.position.set(
-
-7,
-
-3,
-
-5
-
-);
-
-
-scene.add(
-rightLight
-);
-
-
-
-const warmLight=
-new THREE.PointLight(
-
-0xffc36c,
-
-2.2,
-
-25
-
-);
-
-
-warmLight.position.set(
-
--5,
-
-1,
-
-6
-
-);
-
-
-scene.add(
-warmLight
-);
-
-
-
-/* ==================================================
+/* ==========================================================
    BATTERIO
-================================================== */
+========================================================== */
+
+const bacterium = new THREE.Group();
+
+bacterium.rotation.z = -0.075;
+
+scene.add(bacterium);
+
+const objects = {};
+const selected = new Set();
 
 
-const bacterium=
-new THREE.Group();
+/* ==========================================================
+   MATERIALI
 
+   Clearcoat elevato = resa lucida simile al riferimento.
+========================================================== */
 
-scene.add(
-bacterium
-);
+function glossyMaterial(color, options={}){
 
+  return new THREE.MeshPhysicalMaterial({
 
-bacterium.rotation.z=
--0.06;
+    color:color,
 
+    roughness:
+      options.roughness ?? 0.16,
 
-bacterium.rotation.y=
--0.05;
+    metalness:0,
 
+    clearcoat:1,
 
+    clearcoatRoughness:0.06,
 
-const objects={};
+    transparent:
+      options.opacity !== undefined &&
+      options.opacity < 1,
 
+    opacity:
+      options.opacity ?? 1,
 
-const selected=
-new Set();
+    side:THREE.DoubleSide
 
-
-
-/* ==================================================
-   MATERIALE LUCIDO
-================================================== */
-
-
-function glossy(
-
-color,
-
-opacity=1,
-
-clipping=[]
-
-){
-
-return new THREE.MeshPhysicalMaterial({
-
-color:color,
-
-roughness:0.18,
-
-metalness:0,
-
-clearcoat:1,
-
-clearcoatRoughness:0.08,
-
-transparent:
-opacity < 1,
-
-opacity:opacity,
-
-side:
-THREE.DoubleSide,
-
-clippingPlanes:
-clipping,
-
-clipShadows:true
-
-});
+  });
 
 }
 
 
+/* ==========================================================
+   FORMA 2D A CAPSULA
 
-/* ==================================================
-   FORMA CAPSULARE
-================================================== */
+   Questa è la differenza fondamentale.
 
+   Non creiamo più quattro cellule complete sovrapposte.
+   Creiamo invece delle vere FASCE con un foro interno.
+========================================================== */
 
-function makeCapsule(
-
-radius,
-
-length,
-
-material
-
+function capsuleShape(
+  halfLength,
+  radius
 ){
 
-const group=
-new THREE.Group();
+  const shape = new THREE.Shape();
+
+  /*
+     Forma:
+        ___________
+      /             \
+     |               |
+      \_____________/
+  */
+
+  shape.moveTo(
+    -halfLength,
+    radius
+  );
+
+  shape.lineTo(
+    halfLength,
+    radius
+  );
+
+  shape.absarc(
+    halfLength,
+    0,
+    radius,
+    Math.PI/2,
+    -Math.PI/2,
+    true
+  );
+
+  shape.lineTo(
+    -halfLength,
+    -radius
+  );
+
+  shape.absarc(
+    -halfLength,
+    0,
+    radius,
+    -Math.PI/2,
+    Math.PI/2,
+    true
+  );
+
+  return shape;
+}
 
 
+/* ==========================================================
+   FASCIA / GUSCIO
 
-const cylinder=
-new THREE.Mesh(
+   outer = bordo esterno
+   inner = foro interno
 
-new THREE.CylinderGeometry(
+   Il risultato è un anello 3D spesso e pieno.
+========================================================== */
 
-radius,
+function makeShell(
+  outerHalf,
+  outerRadius,
+  innerHalf,
+  innerRadius,
+  depth,
+  color
+){
 
-radius,
-
-length,
-
-80,
-
-1,
-
-false
-
-),
-
-material
-
-);
-
-
-cylinder.rotation.z=
-Math.PI/2;
+  const shape =
+    capsuleShape(
+      outerHalf,
+      outerRadius
+    );
 
 
-cylinder.castShadow=true;
+  /*
+     Foro interno.
+  */
+
+  const hole =
+    new THREE.Path();
 
 
-group.add(
-cylinder
-);
+  hole.moveTo(
+    -innerHalf,
+    innerRadius
+  );
 
 
-
-const left=
-new THREE.Mesh(
-
-new THREE.SphereGeometry(
-
-radius,
-
-80,
-
-50
-
-),
-
-material
-
-);
+  hole.lineTo(
+    innerHalf,
+    innerRadius
+  );
 
 
-left.position.x=
--length/2;
+  hole.absarc(
+    innerHalf,
+    0,
+    innerRadius,
+    Math.PI/2,
+    -Math.PI/2,
+    true
+  );
 
 
-left.castShadow=true;
+  hole.lineTo(
+    -innerHalf,
+    -innerRadius
+  );
 
 
-group.add(
-left
-);
+  hole.absarc(
+    -innerHalf,
+    0,
+    innerRadius,
+    -Math.PI/2,
+    Math.PI/2,
+    true
+  );
 
 
-
-const right=
-left.clone();
+  shape.holes.push(hole);
 
 
-right.position.x=
-length/2;
+  /*
+     Estrusione 3D.
+  */
+
+  const geometry =
+    new THREE.ExtrudeGeometry(
+      shape,
+      {
+        depth:depth,
+        bevelEnabled:true,
+        bevelSegments:8,
+        steps:1,
+        bevelSize:0.09,
+        bevelThickness:0.09,
+        curveSegments:64
+      }
+    );
 
 
-group.add(
-right
-);
+  geometry.center();
 
 
-return group;
+  const mesh =
+    new THREE.Mesh(
+      geometry,
+      glossyMaterial(color)
+    );
+
+
+  mesh.castShadow = true;
+
+
+  return mesh;
 
 }
 
 
+/* ==========================================================
+   CAPSULA
 
-/* ==================================================
-   APERTURA FRONTALE
+   Molto spessa.
+========================================================== */
 
-   Togliamo una parte frontale
-   ma NON metà del batterio.
+objects.capsule =
+  makeShell(
+    3.25,
+    2.18,
 
-   Questo produce un vero
-   "cutaway" con involucri
-   molto più pieni.
-================================================== */
+    3.08,
+    1.98,
 
+    0.85,
 
-const cut=
-new THREE.Plane(
+    0xff861c
+  );
 
-new THREE.Vector3(
-0,
-0,
--1
-),
+objects.capsule.position.z = -0.28;
 
-0.92
-
-);
-
-
-
-/* ==================================================
-   CAPSULA ARANCIONE
-================================================== */
-
-
-objects.capsule=
-makeCapsule(
-
-2.25,
-
-5.0,
-
-glossy(
-
-0xff861d,
-
-1,
-
-[cut]
-
-)
-
-);
-
-
-objects.capsule.visible=false;
-
+objects.capsule.visible = false;
 
 bacterium.add(
-objects.capsule
+  objects.capsule
 );
 
 
+/* ==========================================================
+   PARETE CELLULARE
 
-/* ==================================================
-   PARETE VERDE
-================================================== */
+   Fascia verde spessa.
+========================================================== */
 
+objects.wall =
+  makeShell(
+    3.03,
+    1.92,
 
-objects.wall=
-makeCapsule(
+    2.85,
+    1.67,
 
-2.00,
+    0.90,
 
-4.90,
+    0x22bd4c
+  );
 
-glossy(
+objects.wall.position.z = -0.10;
 
-0x21bd4d,
-
-1,
-
-[cut]
-
-)
-
-);
-
-
-objects.wall.visible=false;
-
+objects.wall.visible = false;
 
 bacterium.add(
-objects.wall
+  objects.wall
 );
 
 
+/* ==========================================================
+   MEMBRANA
 
-/* ==================================================
-   MEMBRANA GIALLA
-================================================== */
+   Fascia gialla ben visibile.
+========================================================== */
 
+objects.membrane =
+  makeShell(
+    2.82,
+    1.61,
 
-objects.membrane=
-makeCapsule(
+    2.65,
+    1.39,
 
-1.72,
+    0.95,
 
-4.72,
+    0xffd322
+  );
 
-glossy(
+objects.membrane.position.z = 0.08;
 
-0xffd11f,
-
-1,
-
-[cut]
-
-)
-
-);
-
-
-objects.membrane.visible=false;
-
+objects.membrane.visible = false;
 
 bacterium.add(
-objects.membrane
+  objects.membrane
 );
 
 
-
-/* ==================================================
+/* ==========================================================
    CITOPLASMA
 
-   Più pieno e molto meno
-   trasparente.
-================================================== */
+   Questa volta NON è un guscio.
+
+   È un volume azzurro PIENO.
+========================================================== */
+
+function makeFilledCapsule(){
+
+  const shape =
+    capsuleShape(
+      2.59,
+      1.33
+    );
 
 
-objects.cytoplasm=
-makeCapsule(
+  const geometry =
+    new THREE.ExtrudeGeometry(
+      shape,
+      {
+        depth:0.82,
 
-1.48,
+        bevelEnabled:true,
 
-4.48,
+        bevelSegments:10,
 
-glossy(
+        bevelSize:0.11,
 
-0x51c9ef,
+        bevelThickness:0.11,
 
-0.92,
-
-[cut]
-
-)
-
-);
+        curveSegments:64
+      }
+    );
 
 
-objects.cytoplasm.visible=false;
+  geometry.center();
 
+
+  const material =
+    new THREE.MeshPhysicalMaterial({
+
+      color:0x55caf1,
+
+      roughness:0.12,
+
+      metalness:0,
+
+      clearcoat:1,
+
+      clearcoatRoughness:0.05,
+
+      transparent:true,
+
+      opacity:0.88,
+
+      transmission:0.05,
+
+      side:THREE.DoubleSide
+
+    });
+
+
+  const mesh =
+    new THREE.Mesh(
+      geometry,
+      material
+    );
+
+
+  mesh.castShadow = true;
+
+
+  return mesh;
+}
+
+
+objects.cytoplasm =
+  makeFilledCapsule();
+
+objects.cytoplasm.position.z = 0.15;
+
+objects.cytoplasm.visible = false;
 
 bacterium.add(
-objects.cytoplasm
+  objects.cytoplasm
 );
 
 
-
-/* ==================================================
-   PROFILI SPESSI DELLA SEZIONE
-================================================== */
-
-
-const rims=
-new THREE.Group();
-
-
-rims.visible=false;
-
-
-bacterium.add(
-rims
-);
-
-
-
-function makeOutline(
-
-radius,
-
-halfLength,
-
-z,
-
-color,
-
-thickness
-
-){
-
-const points=[];
-
-
-const N=70;
-
-
-
-/*
-Lato sinistro
-*/
-
-for(
-let i=0;
-i<=N;
-i++
-){
-
-const angle=
-
-Math.PI/2 +
-
-Math.PI*i/N;
-
-
-points.push(
-
-new THREE.Vector3(
-
--halfLength +
-
-Math.cos(angle)*
-radius,
-
-Math.sin(angle)*
-radius,
-
-z
-
-)
-
-);
-
-}
-
-
-
-/*
-Lato destro
-*/
-
-for(
-let i=0;
-i<=N;
-i++
-){
-
-const angle=
-
--Math.PI/2 +
-
-Math.PI*i/N;
-
-
-points.push(
-
-new THREE.Vector3(
-
-halfLength +
-
-Math.cos(angle)*
-radius,
-
-Math.sin(angle)*
-radius,
-
-z
-
-)
-
-);
-
-}
-
-
-const curve=
-new THREE.CatmullRomCurve3(
-
-points,
-
-true
-
-);
-
-
-const mesh=
-new THREE.Mesh(
-
-new THREE.TubeGeometry(
-
-curve,
-
-240,
-
-thickness,
-
-16,
-
-true
-
-),
-
-glossy(
-color
-)
-
-);
-
-
-rims.add(
-mesh
-);
-
-}
-
-
-
-/*
-Profili volutamente spessi:
-creano l'effetto delle fasce
-del riferimento.
-*/
-
-
-makeOutline(
-
-2.25,
-
-2.50,
-
-0.93,
-
-0xff861d,
-
-0.12
-
-);
-
-
-makeOutline(
-
-2.00,
-
-2.45,
-
-0.94,
-
-0x21bd4d,
-
-0.11
-
-);
-
-
-makeOutline(
-
-1.72,
-
-2.36,
-
-0.95,
-
-0xffd11f,
-
-0.10
-
-);
-
-
-makeOutline(
-
-1.48,
-
-2.24,
-
-0.96,
-
-0x43bce7,
-
-0.07
-
-);
-
-
-
-/* ==================================================
+/* ==========================================================
    NUCLEOIDE
-================================================== */
+
+   Groviglio centrale compatto.
+========================================================== */
+
+const dna = new THREE.Group();
+
+const dnaMaterial =
+  glossyMaterial(
+    0x7330bb
+  );
 
 
-const dna=
-new THREE.Group();
+for(let k=0;k<6;k++){
+
+  const points=[];
+
+  const phase =
+    k * 1.05;
 
 
-const dnaMaterial=
-glossy(
-0x7432bd
-);
+  for(let i=0;i<110;i++){
+
+    const t =
+      i / 109 *
+      Math.PI * 2;
 
 
+    const x =
 
-for(
-let k=0;
-k<5;
-k++
-){
+      Math.cos(
+        t*1.05 + phase
+      ) * 1.08
 
-const points=[];
+      +
 
-
-const phase=
-k*1.35;
-
-
-for(
-let i=0;
-i<100;
-i++
-){
-
-const t=
-
-i/99 *
-
-Math.PI *
-
-2;
+      Math.sin(
+        t*3.4 + phase
+      ) * 0.27;
 
 
-points.push(
+    const y =
 
-new THREE.Vector3(
+      Math.sin(
+        t*1.65 + phase
+      ) * 0.50
 
-Math.cos(
-t*1.2 + phase
-)*1.05
+      +
 
-+
-
-Math.sin(
-t*3.3
-)*0.27,
+      Math.cos(
+        t*2.7
+      ) * 0.10;
 
 
-Math.sin(
-t*1.8 + phase
-)*0.55,
+    const z =
+
+      0.78
+
+      +
+
+      Math.cos(
+        t*2.1 + phase
+      ) * 0.15;
 
 
-1.10
+    points.push(
+      new THREE.Vector3(
+        x,
+        y,
+        z
+      )
+    );
 
-+
-
-Math.cos(
-t*2.6 + phase
-)*0.18
-
-)
-
-);
-
-}
+  }
 
 
-const curve=
-new THREE.CatmullRomCurve3(
-
-points,
-
-true
-
-);
+  const curve =
+    new THREE.CatmullRomCurve3(
+      points,
+      true
+    );
 
 
-const tube=
-new THREE.Mesh(
-
-new THREE.TubeGeometry(
-
-curve,
-
-180,
-
-0.105,
-
-14,
-
-true
-
-),
-
-dnaMaterial
-
-);
+  const geometry =
+    new THREE.TubeGeometry(
+      curve,
+      180,
+      0.105,
+      14,
+      true
+    );
 
 
-dna.add(
-tube
-);
+  const strand =
+    new THREE.Mesh(
+      geometry,
+      dnaMaterial
+    );
+
+
+  strand.castShadow = true;
+
+  dna.add(strand);
 
 }
 
 
-dna.visible=false;
+dna.position.x = -0.30;
+
+dna.position.y = 0.08;
+
+dna.visible = false;
+
+bacterium.add(dna);
+
+objects.dna = dna;
 
 
-bacterium.add(
-dna
-);
-
-
-objects.dna=
-dna;
-
-
-
-/* ==================================================
+/* ==========================================================
    RIBOSOMI
-================================================== */
+
+   Arancioni e distribuiti.
+========================================================== */
+
+const ribosomes =
+  new THREE.Group();
 
 
-const ribosomes=
-new THREE.Group();
+const ribosomeMaterial =
+  glossyMaterial(
+    0xf58220
+  );
 
 
-const ribosomeMaterial=
-glossy(
-0xf58220
-);
+const ribosomePositions = [
 
+[-2.05, .75],
+[-1.75,-.55],
+[-1.45, .35],
+[-1.20,-.95],
 
+[-.95,.95],
+[-.65,-.55],
 
-const ribosomePositions=[
+[-.35,.80],
+[-.10,-.95],
 
-[-2.1, .9,1.13],
+[.25,.55],
+[.50,-.50],
 
-[-1.65,-.75,1.12],
+[.80,.95],
+[1.00,-.85],
 
-[-1.35,.45,1.16],
+[1.35,.55],
+[1.55,-.35],
 
-[-.95,-.95,1.10],
+[1.90,.75],
+[2.05,-.65],
 
-[-.55,.95,1.14],
+[-2.15,-.10],
+[-1.65,.05],
 
-[-.2,-.5,1.17],
+[.15,.05],
+[.90,.10],
 
-[.3,.85,1.12],
-
-[.55,-.85,1.15],
-
-[1.0,.45,1.16],
-
-[1.35,-.45,1.12],
-
-[1.75,.75,1.15],
-
-[2.05,-.65,1.14],
-
-[-2.25,-.15,1.16],
-
-[-1.75,.15,1.18],
-
-[-.7,.1,1.16],
-
-[.2,.2,1.18],
-
-[1.2,.1,1.17],
-
-[2.15,.05,1.16],
-
-[1.7,-1.0,1.10],
-
-[-1.4,-1.1,1.08]
+[1.85,.05]
 
 ];
 
 
 for(
-const position
-of ribosomePositions
+  const [x,y]
+  of ribosomePositions
 ){
 
-const ribosome=
-new THREE.Mesh(
+  const ribosome =
+    new THREE.Mesh(
 
-new THREE.SphereGeometry(
+      new THREE.SphereGeometry(
+        0.14,
+        28,
+        22
+      ),
 
-0.14,
+      ribosomeMaterial
 
-28,
-
-22
-
-),
-
-ribosomeMaterial
-
-);
+    );
 
 
-ribosome.position.set(
-...position
-);
+  ribosome.position.set(
+    x,
+    y,
+    1.04
+  );
 
 
-ribosome.castShadow=true;
+  ribosome.castShadow=true;
 
 
-ribosomes.add(
-ribosome
-);
+  ribosomes.add(
+    ribosome
+  );
 
 }
 
 
 ribosomes.visible=false;
 
-
 bacterium.add(
-ribosomes
+  ribosomes
 );
 
-
 objects.ribosomes=
-ribosomes;
+  ribosomes;
 
 
-
-/* ==================================================
+/* ==========================================================
    PLASMIDE
 
    UNO SOLO.
-================================================== */
+========================================================== */
 
+const plasmid =
+  new THREE.Mesh(
 
-const plasmid=
-new THREE.Mesh(
+    new THREE.TorusGeometry(
+      0.42,
+      0.095,
+      24,
+      72
+    ),
 
-new THREE.TorusGeometry(
+    glossyMaterial(
+      0xd98bed
+    )
 
-0.43,
-
-0.09,
-
-22,
-
-70
-
-),
-
-glossy(
-0xd989ef
-)
-
-);
+  );
 
 
 plasmid.position.set(
-
-1.65,
-
--.55,
-
-1.18
-
+  1.65,
+  -0.55,
+  1.08
 );
 
 
-plasmid.rotation.x=
-0.1;
+plasmid.rotation.x =
+  0.05;
 
+
+plasmid.castShadow=true;
 
 plasmid.visible=false;
 
-
 bacterium.add(
-plasmid
+  plasmid
 );
-
 
 objects.plasmid=
-plasmid;
+  plasmid;
 
 
-
-/* ==================================================
+/* ==========================================================
    PILI / FIMBRIE
 
-   Corti e aderenti alla
-   capsula.
-================================================== */
+   Corti, spessi e attaccati al bordo esterno.
+========================================================== */
+
+const pili =
+  new THREE.Group();
 
 
-const pili=
-new THREE.Group();
+const piliMaterial =
+  glossyMaterial(
+    0xc95715
+  );
 
 
-const piliMaterial=
-glossy(
-0xc95815
-);
-
-
-
-function createPilus(
-
-position,
-
-direction,
-
-length=0.55
-
+function makePilus(
+  x,
+  y,
+  angle,
+  length=0.55
 ){
 
-const pilus=
-new THREE.Mesh(
-
-new THREE.CylinderGeometry(
-
-0.055,
-
-0.075,
-
-length,
-
-16
-
-),
-
-piliMaterial
-
-);
+  const geometry =
+    new THREE.CylinderGeometry(
+      0.055,
+      0.075,
+      length,
+      16
+    );
 
 
-pilus.position
-.copy(
-position
-)
-.add(
-
-direction
-.clone()
-.multiplyScalar(
-length/2
-)
-
-);
+  const mesh =
+    new THREE.Mesh(
+      geometry,
+      piliMaterial
+    );
 
 
-pilus.quaternion
-.setFromUnitVectors(
-
-new THREE.Vector3(
-0,
-1,
-0
-),
-
-direction
-.clone()
-.normalize()
-
-);
+  mesh.position.set(
+    x,
+    y,
+    0.05
+  );
 
 
-pilus.castShadow=true;
+  mesh.rotation.z =
+    angle;
 
 
-pili.add(
-pilus
-);
+  mesh.castShadow=true;
+
+
+  pili.add(mesh);
 
 }
 
 
+/* parte superiore */
 
-/*
-Pili lungo il corpo
-*/
-
-
-for(
-let i=0;
-i<38;
-i++
-){
-
-const x=
-
-THREE.MathUtils.randFloat(
-
--2.45,
-
-2.45
-
-);
+const topXs=[
+-2.55,-1.95,-1.30,-.65,
+.10,.80,1.50,2.15,2.65
+];
 
 
-const angle=
+for(const x of topXs){
 
-THREE.MathUtils.randFloat(
-
-0,
-
-Math.PI*2
-
-);
-
-
-/*
-evitiamo di metterli
-nella grande apertura
-frontale
-*/
-
-if(
-Math.sin(angle) > .35
-){
-continue;
-}
-
-
-const y=
-
-Math.cos(angle)*
-2.27;
-
-
-const z=
-
-Math.sin(angle)*
-2.27;
-
-
-const direction=
-new THREE.Vector3(
-
-0,
-
-Math.cos(angle),
-
-Math.sin(angle)
-
-);
-
-
-createPilus(
-
-new THREE.Vector3(
-x,
-y,
-z
-),
-
-direction
-
-);
+  makePilus(
+    x,
+    2.35,
+    -0.10,
+    0.58
+  );
 
 }
 
 
+/* parte inferiore */
 
-/*
-Pili sulle estremità
-*/
-
-
-for(
-const side
-of [-1,1]
-){
-
-for(
-let i=0;
-i<10;
-i++
-){
-
-const a=
-
-i/10 *
-Math.PI *
-2;
+const bottomXs=[
+-2.40,-1.75,-1.05,-.30,
+.45,1.20,1.90,2.45
+];
 
 
-const direction=
-new THREE.Vector3(
+for(const x of bottomXs){
 
-side*.85,
+  makePilus(
+    x,
+    -2.35,
+    0.10,
+    0.55
+  );
 
-Math.cos(a),
-
-Math.sin(a)
-
-).normalize();
-
-
-if(
-direction.z > .35
-){
-continue;
 }
 
 
-const position=
-new THREE.Vector3(
+/* lato sinistro */
 
-side*3.0,
+makePilus(
+  -3.55,
+  1.45,
+  -0.75,
+  0.55
+);
 
-Math.cos(a)*1.55,
+makePilus(
+  -3.75,
+  .75,
+  -1.15,
+  0.55
+);
 
-Math.sin(a)*1.55
+makePilus(
+  -3.82,
+  0,
+  -1.57,
+  0.55
+);
 
+makePilus(
+  -3.70,
+  -.80,
+  -2.0,
+  0.55
+);
+
+makePilus(
+  -3.45,
+  -1.45,
+  -2.35,
+  0.55
 );
 
 
-createPilus(
+/* lato destro */
 
-position,
-
-direction,
-
-0.52
-
+makePilus(
+  3.55,
+  1.45,
+  .75,
+  .55
 );
 
-}
+makePilus(
+  3.72,
+  .75,
+  1.15,
+  .55
+);
 
-}
+makePilus(
+  3.75,
+  -.75,
+  2.0,
+  .55
+);
 
+makePilus(
+  3.50,
+  -1.45,
+  2.35,
+  .55
+);
+
+
+pili.position.z=0.15;
 
 pili.visible=false;
 
-
 bacterium.add(
-pili
+  pili
 );
 
-
 objects.pili=
-pili;
+  pili;
 
 
-
-/* ==================================================
+/* ==========================================================
    FLAGELLO
-================================================== */
+
+   Grande, verde, lucido e completamente visibile.
+========================================================== */
+
+const flagellum =
+  new THREE.Group();
 
 
-const flagellum=
-new THREE.Group();
+const flagMaterial =
+  glossyMaterial(
+    0x20ae49
+  );
 
 
-
-const flagPoints=[
+const flagPoints = [
 
 new THREE.Vector3(
-4.75,
-0,
-0
+  3.72,
+  0,
+  .10
 ),
 
 new THREE.Vector3(
-5.2,
-.1,
-0
+  4.25,
+  .10,
+  .10
 ),
 
 new THREE.Vector3(
-5.65,
-.65,
-0
+  4.70,
+  .55,
+  .10
 ),
 
 new THREE.Vector3(
-6.15,
-.72,
-0
+  5.20,
+  .65,
+  .10
 ),
 
 new THREE.Vector3(
-6.55,
-.15,
-0
+  5.60,
+  .15,
+  .10
 ),
 
 new THREE.Vector3(
-6.95,
--.6,
-0
+  5.95,
+  -.55,
+  .10
 ),
 
 new THREE.Vector3(
-7.45,
--.7,
-0
+  6.40,
+  -.70,
+  .10
 ),
 
 new THREE.Vector3(
-7.85,
--.1,
-0
+  6.85,
+  -.20,
+  .10
 ),
 
 new THREE.Vector3(
-8.25,
-.5,
-0
+  7.20,
+  .40,
+  .10
 )
 
 ];
 
 
-const flagCurve=
-new THREE.CatmullRomCurve3(
-flagPoints
-);
+const flagCurve =
+  new THREE.CatmullRomCurve3(
+    flagPoints
+  );
 
 
-const flag=
-new THREE.Mesh(
+const flagGeometry =
+  new THREE.TubeGeometry(
+    flagCurve,
+    180,
+    0.16,
+    20,
+    false
+  );
 
-new THREE.TubeGeometry(
 
-flagCurve,
-
-200,
-
-0.16,
-
-20,
-
-false
-
-),
-
-glossy(
-0x20ad49
-)
-
-);
+const flag =
+  new THREE.Mesh(
+    flagGeometry,
+    flagMaterial
+  );
 
 
 flag.castShadow=true;
 
-
-flagellum.add(
-flag
-);
+flagellum.add(flag);
 
 
+/* bulbo di attacco */
 
-const flagBase=
-new THREE.Mesh(
+const flagBase =
+  new THREE.Mesh(
 
-new THREE.SphereGeometry(
+    new THREE.SphereGeometry(
+      .30,
+      32,
+      24
+    ),
 
-0.29,
+    flagMaterial
 
-32,
-
-26
-
-),
-
-glossy(
-0x20ad49
-)
-
-);
+  );
 
 
 flagBase.position.set(
-
-4.65,
-
-0,
-
-0
-
+  3.65,
+  0,
+  .10
 );
 
 
+flagBase.scale.set(
+  1.1,
+  1.1,
+  1.1
+);
+
+
+flagBase.castShadow=true;
+
+
 flagellum.add(
-flagBase
+  flagBase
 );
 
 
 flagellum.visible=false;
 
-
 bacterium.add(
-flagellum
+  flagellum
 );
-
 
 objects.flagellum=
-flagellum;
+  flagellum;
 
 
+/* ==========================================================
+   IMPORTANTE:
 
-/* ==================================================
-   NESSUNA BASE
-
-   Non viene creato nessun
-   CylinderGeometry sotto
-   al batterio.
-================================================== */
+   NON ESISTE ALCUNA BASE / PIATTAFORMA / OMBRA GRIGIA.
+========================================================== */
 
 
+/* ==========================================================
+   INTERAZIONE COMPONENTI
+========================================================== */
 
-/* ==================================================
-   MOSTRA / NASCONDI
-================================================== */
+function togglePart(part){
 
+  if(selected.has(part)){
 
-function updateRims(){
+    selected.delete(part);
 
-rims.visible=
+    objects[part].visible=false;
 
-selected.has("capsule")
+  }else{
 
-||
+    selected.add(part);
 
-selected.has("wall")
+    objects[part].visible=true;
 
-||
-
-selected.has("membrane")
-
-||
-
-selected.has("cytoplasm");
-
-}
+  }
 
 
-
-function togglePart(
-part
-){
-
-if(
-selected.has(part)
-){
-
-selected.delete(
-part
-);
+  const card =
+    document.querySelector(
+      `[data-part="${part}"]`
+    );
 
 
-objects[
-part
-].visible=false;
+  card.classList.toggle(
+    "selected",
+    selected.has(part)
+  );
 
 }
-
-else{
-
-selected.add(
-part
-);
-
-
-objects[
-part
-].visible=true;
-
-}
-
-
-const button=
-document.querySelector(
-
-`[data-part="${part}"]`
-
-);
-
-
-button.classList.toggle(
-
-"selected",
-
-selected.has(
-part
-)
-
-);
-
-
-updateRims();
-
-}
-
-
-
-/* ==================================================
-   COMPONENTI CLICCABILI
-================================================== */
 
 
 document
-.querySelectorAll(
-".piece"
-)
-.forEach(
+.querySelectorAll(".piece")
+.forEach(piece=>{
 
-piece=>{
+  piece.addEventListener(
+    "click",
+    ()=>togglePart(
+      piece.dataset.part
+    )
+  );
 
-piece.addEventListener(
-
-"click",
-
-()=>{
-
-togglePart(
-piece.dataset.part
-);
-
-}
-
-);
-
-}
-
-);
+});
 
 
+/* ==========================================================
+   LOGICA DEL GIOCO
+========================================================== */
 
-/* ==================================================
-   CONTROLLO DEL GIOCO
-================================================== */
-
-
-const essential=[
+const essential = [
 
 "wall",
-
 "membrane",
-
 "cytoplasm",
-
 "dna",
-
 "ribosomes"
 
 ];
 
 
-const clues={
+const clues = {
 
 wall:
-"🧱 Manca una struttura che dia forma e protezione al batterio.",
+"🧱 Manca la struttura che dà forma e protezione al nostro batterio.",
 
 membrane:
-"🚪 Manca la struttura che controlla ciò che entra e ciò che esce.",
+"🚪 Manca la barriera che controlla ciò che entra e ciò che esce.",
 
 cytoplasm:
-"💧 Manca l'ambiente interno in cui avvengono molte attività cellulari.",
+"💧 Manca l'ambiente interno della cellula.",
 
 dna:
 "🧬 Il batterio non trova le sue istruzioni genetiche!",
 
 ribosomes:
-"⚙️ Il batterio non riesce a produrre le proteine."
+"⚙️ Il batterio non riesce a costruire le proteine."
 
 };
-
 
 
 let alive=false;
 
 
+/* ==========================================================
+   DAI VITA
+========================================================== */
 
 document
-.getElementById(
-"life"
-)
+.getElementById("life")
 .addEventListener(
-
 "click",
-
 ()=>{
 
-
-const missing=
-
-essential.filter(
-
-part=>
-!selected.has(
-part
-)
-
-);
+  const missing =
+    essential.filter(
+      x=>!selected.has(x)
+    );
 
 
-const message=
-document.getElementById(
-"message"
-);
+  const message =
+    document.getElementById(
+      "message"
+    );
 
 
-if(
-missing.length
-){
+  if(missing.length){
 
-const missingPart=
-
-missing[
-Math.floor(
-Math.random()*
-missing.length
-)
-];
+    const randomMissing =
+      missing[
+        Math.floor(
+          Math.random()*
+          missing.length
+        )
+      ];
 
 
-message.className=
-"hint";
+    message.className=
+      "hint";
 
 
-message.innerHTML=
+    message.innerHTML=
 
-"🤔 <b>Il batterio non è ancora pronto!</b><br><br>"
+      "🤔 <b>Il batterio non è ancora pronto!</b><br><br>"
 
-+
+      +
 
-clues[
-missingPart
-];
+      clues[randomMissing];
 
 
-return;
+    return;
 
-}
-
-
-
-alive=true;
+  }
 
 
-message.className=
-"success";
+  alive=true;
 
 
-let text=
-
-"🎉 <b>COMPLIMENTI!</b> Hai dato vita al tuo batterio! 🧫";
-
-
-if(
-selected.has(
-"capsule"
-)
-){
-
-text+=
-
-"<br>🛡️ La capsula offre una protezione aggiuntiva.";
-
-}
+  message.className=
+    "success";
 
 
-if(
-selected.has(
-"plasmid"
-)
-){
+  let text=
 
-text+=
-
-"<br>🧬 Il plasmide è una piccola molecola di DNA extra.";
-
-}
+  "🎉 <b>COMPLIMENTI!</b> Hai dato vita al tuo batterio! 🧫";
 
 
-if(
-selected.has(
-"pili"
-)
-){
+  if(
+    selected.has("capsule")
+  ){
 
-text+=
+    text+=
+    "<br>🛡️ La capsula offre una protezione aggiuntiva.";
 
-"<br>📍 Pili e fimbrie possono favorire l'adesione.";
-
-}
+  }
 
 
-if(
-selected.has(
-"flagellum"
-)
-){
+  if(
+    selected.has("plasmid")
+  ){
 
-text+=
+    text+=
+    "<br>🧬 Il plasmide è una piccola molecola di DNA extra.";
 
-"<br>🏊 Il flagello può permettere il movimento.";
-
-}
+  }
 
 
-message.innerHTML=
-text;
+  if(
+    selected.has("pili")
+  ){
+
+    text+=
+    "<br>📍 Pili e fimbrie possono favorire l'adesione.";
+
+  }
 
 
-}
+  if(
+    selected.has("flagellum")
+  ){
 
-);
+    text+=
+    "<br>🏊 Il flagello può permettere il movimento.";
+
+  }
 
 
+  message.innerHTML=
+    text;
 
-/* ==================================================
+});
+
+
+/* ==========================================================
    RESET
-================================================== */
-
+========================================================== */
 
 document
-.getElementById(
-"reset"
-)
+.getElementById("reset")
 .addEventListener(
-
 "click",
-
 ()=>{
 
+  selected.clear();
 
-selected.clear();
-
-
-alive=false;
+  alive=false;
 
 
-Object
-.values(
-objects
-)
-.forEach(
-
-object=>{
-
-object.visible=false;
-
-}
-
-);
+  Object
+  .values(objects)
+  .forEach(
+    object=>{
+      object.visible=false;
+    }
+  );
 
 
-rims.visible=false;
+  document
+  .querySelectorAll(".piece")
+  .forEach(
+    piece=>
+      piece.classList.remove(
+        "selected"
+      )
+  );
 
 
-document
-.querySelectorAll(
-".piece"
-)
-.forEach(
-
-piece=>
-
-piece
-.classList
-.remove(
-"selected"
-)
-
-);
+  bacterium.position.y=0;
 
 
-const message=
-document.getElementById(
-"message"
-);
+  const message =
+    document.getElementById(
+      "message"
+    );
 
 
-message.className="";
+  message.className="";
 
 
-message.innerHTML=
+  message.innerHTML=
+  "💡 Quali sono le strutture principali di una cellula batterica?";
 
-"🔬 Quali sono le strutture principali di una cellula batterica?";
-
-
-bacterium.position.y=0;
+});
 
 
-}
-
-);
-
-
-
-/* ==================================================
+/* ==========================================================
    ANIMAZIONE
-================================================== */
+========================================================== */
 
-
-const clock=
-new THREE.Clock();
-
+const clock =
+  new THREE.Clock();
 
 
 function animate(){
 
-requestAnimationFrame(
-animate
-);
+  requestAnimationFrame(
+    animate
+  );
 
 
-const time=
-clock.getElapsedTime();
+  const t =
+    clock.getElapsedTime();
 
 
-if(
-alive
-){
+  if(alive){
 
-bacterium.position.y=
-
-Math.sin(
-time*2
-)*
-0.08;
+    bacterium.position.y =
+      Math.sin(t*2)*
+      0.08;
 
 
-if(
-selected.has(
-"flagellum"
-)
-){
+    if(
+      selected.has(
+        "flagellum"
+      )
+    ){
 
-flagellum.rotation.z=
+      flagellum.rotation.z =
+        Math.sin(t*7)*
+        0.045;
 
-Math.sin(
-time*6
-)*
-0.055;
+    }
 
-}
-
-}
+  }
 
 
-controls.update();
+  controls.update();
 
 
-renderer.render(
-
-scene,
-
-camera
-
-);
+  renderer.render(
+    scene,
+    camera
+  );
 
 }
 
@@ -2764,42 +1807,28 @@ camera
 animate();
 
 
-
-/* ==================================================
+/* ==========================================================
    RESPONSIVE
-================================================== */
-
+========================================================== */
 
 window.addEventListener(
-
 "resize",
-
 ()=>{
 
-
-camera.aspect=
-
-container.clientWidth /
-
-container.clientHeight;
+  camera.aspect =
+    container.clientWidth /
+    container.clientHeight;
 
 
-camera.updateProjectionMatrix();
+  camera.updateProjectionMatrix();
 
 
-renderer.setSize(
+  renderer.setSize(
+    container.clientWidth,
+    container.clientHeight
+  );
 
-container.clientWidth,
-
-container.clientHeight
-
-);
-
-
-}
-
-);
-
+});
 
 </script>
 
